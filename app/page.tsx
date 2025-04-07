@@ -1,7 +1,8 @@
 import AboutMe from "@/components/AboutMe";
-import Grid from "@/components/Grid";
+import Grid from "@/components/Gride";
 import Hero from "@/components/Hero";
 import { FloatingNav } from "@/components/ui/FloatingNavbar";
+import GetStore from "@/components/GetStore";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
         <Hero />
         <AboutMe />
         <Grid />
+        <GetStore />
       </div>
     </div>
   );

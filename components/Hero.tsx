@@ -99,7 +99,7 @@ const Hero = () => {
             initial="start"
             whileInView="end"
             viewport={{ once: true }}
-            className="text-center md:tracking-wider mb-4 text-sm md:text-lg lg:text-2xl text-white"
+            className="text-center md:tracking-wider my-6 sm:my-4 text-sm md:text-lg lg:text-2xl text-white"
           >
             Hi!{" "}
             <span className="text-purple-400 leading-snug tracking-wide">
