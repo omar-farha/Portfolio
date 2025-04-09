@@ -1,6 +1,5 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { GlobeDemo } from "./GridGlobe";
 import Lottie from "react-lottie";
 import { useState } from "react";
 import animationData from "@/data/confetti.json";
@@ -9,6 +8,12 @@ import { Copy } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeIn, fadeInUp } from "@/lib/motionVariants";
 import Image from "next/image"; // Added Image import
+import dynamic from "next/dynamic";
+
+const GlobeDemo = dynamic(() => import("@/components/ui/GridGlobe"), {
+  ssr: false,
+  loading: () => <div className="h-[500px] w-full bg-gray-100" />,
+});
 
 export const BentoGrid = ({
   className,

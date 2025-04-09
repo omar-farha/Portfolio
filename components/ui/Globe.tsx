@@ -1,26 +1,34 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Color, Scene, Fog, PerspectiveCamera, Vector3, Group } from "three"; // Added Group import
+import { Color, Scene, Fog, PerspectiveCamera, Vector3, Group } from "three";
 import ThreeGlobe from "three-globe";
 import { useThree, Canvas, extend } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import countries from "@/data/globe.json";
 
-declare module "@react-three/fiber" {
-  interface ThreeElements {
-    threeGlobe: ThreeElements["mesh"] & {
-      new (): ThreeGlobe;
-    };
+// Type declarations
+declare global {
+  interface Window {
+    ThreeGlobe: typeof ThreeGlobe;
   }
 }
 
-extend({ ThreeGlobe: ThreeGlobe });
+declare module "@react-three/fiber" {
+  interface ThreeElements {
+    threeGlobe: object;
+  }
+}
+
+// Extend Three.js with ThreeGlobe
+if (typeof window !== "undefined") {
+  extend({ ThreeGlobe: ThreeGlobe });
+}
 
 const RING_PROPAGATION_SPEED = 3;
 const aspect = 1.2;
 const cameraZ = 300;
 
-type Position = {
+interface Position {
   order: number;
   startLat: number;
   startLng: number;
@@ -28,9 +36,9 @@ type Position = {
   endLng: number;
   arcAlt: number;
   color: string;
-};
+}
 
-export type GlobeConfig = {
+export interface GlobeConfig {
   pointSize?: number;
   globeColor?: string;
   showAtmosphere?: boolean;
@@ -48,13 +56,9 @@ export type GlobeConfig = {
   arcLength?: number;
   rings?: number;
   maxRings?: number;
-  initialPosition?: {
-    lat: number;
-    lng: number;
-  };
   autoRotate?: boolean;
   autoRotateSpeed?: number;
-};
+}
 
 interface WorldProps {
   globeConfig: GlobeConfig;
@@ -63,7 +67,7 @@ interface WorldProps {
 
 export function Globe({ globeConfig, data }: WorldProps) {
   const globeRef = useRef<ThreeGlobe | null>(null);
-  const groupRef = useRef<Group>(null); // Changed from THREE.Group to Group
+  const groupRef = useRef<Group>(null);
   const [isInitialized, setIsInitialized] = useState(false);
 
   const defaultProps = {
@@ -83,8 +87,9 @@ export function Globe({ globeConfig, data }: WorldProps) {
     ...globeConfig,
   };
 
-  // Initialize globe only once
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     if (!globeRef.current && groupRef.current) {
       globeRef.current = new ThreeGlobe();
       groupRef.current.add(globeRef.current);
@@ -92,7 +97,6 @@ export function Globe({ globeConfig, data }: WorldProps) {
     }
   }, []);
 
-  // Build material when globe is initialized or when relevant props change
   useEffect(() => {
     if (!globeRef.current || !isInitialized) return;
 
@@ -114,7 +118,6 @@ export function Globe({ globeConfig, data }: WorldProps) {
     globeConfig.shininess,
   ]);
 
-  // Build data when globe is initialized or when data changes
   useEffect(() => {
     if (!globeRef.current || !isInitialized || !data) return;
 
@@ -138,7 +141,6 @@ export function Globe({ globeConfig, data }: WorldProps) {
       });
     }
 
-    // remove duplicates for same lat and lng
     const filteredPoints = points.filter(
       (v, i, a) =>
         a.findIndex((v2) =>
@@ -163,7 +165,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
       .arcStartLng((d) => (d as { startLng: number }).startLng * 1)
       .arcEndLat((d) => (d as { endLat: number }).endLat * 1)
       .arcEndLng((d) => (d as { endLng: number }).endLng * 1)
-      .arcColor((e: unknown) => (e as Position).color) // Fixed line
+      .arcColor((e: unknown) => (e as Position).color)
       .arcAltitude((e) => (e as { arcAlt: number }).arcAlt * 1)
       .arcStroke(() => [0.32, 0.28, 0.3][Math.round(Math.random() * 2)])
       .arcDashLength(defaultProps.arcLength)
@@ -200,7 +202,6 @@ export function Globe({ globeConfig, data }: WorldProps) {
     defaultProps.maxRings,
   ]);
 
-  // Handle rings animation with cleanup
   useEffect(() => {
     if (!globeRef.current || !isInitialized || !data) return;
 
@@ -236,6 +237,8 @@ export function WebGLRendererConfig() {
   const { gl, size } = useThree();
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     gl.setPixelRatio(window.devicePixelRatio);
     gl.setSize(size.width, size.height);
     gl.setClearColor(0xffaaff, 0);
@@ -246,8 +249,17 @@ export function WebGLRendererConfig() {
 
 export function World(props: WorldProps) {
   const { globeConfig } = props;
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   const scene = new Scene();
   scene.fog = new Fog(0xffffff, 400, 2000);
+
   return (
     <Canvas scene={scene} camera={new PerspectiveCamera(50, aspect, 180, 1800)}>
       <WebGLRendererConfig />
@@ -275,7 +287,6 @@ export function World(props: WorldProps) {
         autoRotate={true}
         minPolarAngle={Math.PI / 3.5}
         maxPolarAngle={Math.PI - Math.PI / 3}
-        makeDefault
       />
     </Canvas>
   );
