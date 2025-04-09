@@ -2,17 +2,14 @@
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 
-const World = dynamic(
-  () => import("./Globe").then((mod) => ({ default: mod.World })),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="h-full w-full flex items-center justify-center bg-gray-900">
-        <div className="animate-pulse">Loading globe...</div>
-      </div>
-    ),
-  }
-);
+const World = dynamic(() => import("./Globe").then((mod) => mod.World), {
+  ssr: false,
+  loading: () => (
+    <div className="h-full w-full flex items-center justify-center bg-gray-900">
+      <div className="animate-pulse">Loading globe...</div>
+    </div>
+  ),
+});
 
 export default function GlobeDemo() {
   const [mounted, setMounted] = useState(false);

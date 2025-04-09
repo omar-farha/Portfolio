@@ -4,10 +4,9 @@ import { Color, Scene, Fog, PerspectiveCamera, Vector3, Group } from "three";
 import ThreeGlobe from "three-globe";
 import { useThree, Canvas, extend } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import dynamic from "next/dynamic";
 
 // Dynamic import for JSON data to prevent SSR issues
-const countries = dynamic(() => import("@/data/globe.json"), { ssr: false });
+import countries from "@/data/globe.json";
 
 // Type declarations
 declare global {
