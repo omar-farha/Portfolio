@@ -12,7 +12,11 @@ import dynamic from "next/dynamic";
 
 const GlobeDemo = dynamic(() => import("@/components/ui/GridGlobe"), {
   ssr: false,
-  loading: () => <div className="h-[500px] w-full bg-gray-100" />,
+  loading: () => (
+    <div className="h-[500px] w-full bg-gray-900 flex items-center justify-center">
+      <div className="animate-pulse">Loading interactive globe...</div>
+    </div>
+  ),
 });
 
 export const BentoGrid = ({
