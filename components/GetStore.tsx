@@ -5,7 +5,7 @@ import shop from "@/public/original-4172ed9d2db71dfebb894800c368b8e3.png";
 
 function GetStore() {
   return (
-    <div className="flex flex-col overflow-hidden">
+    <div className="flex flex-col overflow-hidden relative">
       <ContainerScroll
         titleComponent={
           <>
@@ -25,6 +25,7 @@ function GetStore() {
           width={1400}
           className="mx-auto rounded-2xl object-cover h-full object-left-top"
           draggable={false}
+          priority // Add this for LCP warning
         />
       </ContainerScroll>
     </div>
