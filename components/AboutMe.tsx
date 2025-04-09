@@ -14,82 +14,93 @@ import { motion } from "framer-motion";
 import { TextAnimate } from "./magicui/text-animate";
 
 const fadeInUp = {
-  start: {
-    y: 30,
-    opacity: 0,
-  },
+  start: { y: 30, opacity: 0 },
   end: {
     y: 0,
     opacity: 1,
-    transition: {
-      duration: 0.7,
-      delay: 0.2,
-    },
+    transition: { duration: 0.7, delay: 0.2 },
   },
 };
+
 const fadeInRight = {
-  start: {
-    x: -30,
-    opacity: 0,
-  },
+  start: { x: -30, opacity: 0 },
   end: {
     x: 0,
     opacity: 1,
-    transition: {
-      duration: 0.7,
-    },
+    transition: { duration: 0.7 },
   },
 };
+
 const staggerContainer = {
   start: {},
   end: {
-    transition: {
-      staggerChildren: 0.1,
-    },
+    transition: { staggerChildren: 0.1 },
   },
 };
 
 function AboutMe() {
   return (
-    <div className="container" id="about">
-      <div className="w-full px-4 sm:px-8 lg:px-[12%] py-10 scroll-mt-20 text-white">
-        <motion.h4
-          variants={fadeInUp}
+    <section
+      id="about"
+      className="scroll-mt-20 bg-gradient-to-b pt-36 lg:pt-20 pb-16"
+    >
+      <div className="container mx-auto px-4 mt-16  ">
+        {/* Header Section */}
+        <motion.div
           initial="start"
           whileInView="end"
           viewport={{ once: true }}
-          className="text-center mb-2 text-lg"
+          className="text-center mb-12"
         >
-          Introduction
-        </motion.h4>
+          <motion.h4
+            variants={fadeInUp}
+            initial="start"
+            whileInView="end"
+            viewport={{ once: true }}
+            className="text-lg text-purple-400 mb-2"
+          >
+            Introduction
+          </motion.h4>
+          <motion.h2
+            variants={fadeInUp}
+            initial="start"
+            whileInView="end"
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-bold text-white"
+          >
+            About Me
+          </motion.h2>
+        </motion.div>
 
-        <motion.h2
-          variants={fadeInUp}
-          initial="start"
-          whileInView="end"
-          viewport={{ once: true }}
-          className="text-center text-5xl"
-        >
-          About me
-        </motion.h2>
-
-        <div className="flex w-full flex-col lg:flex-row items-center gap-20 my-20">
+        {/* Content Section */}
+        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+          {/* Profile Image */}
           <motion.div
             variants={fadeInRight}
             initial="start"
             whileInView="end"
             viewport={{ once: true }}
-            className="w-64 sm:w-80 rounded-3xl max-w-none"
+            className="w-full max-w-xs sm:max-w-sm mx-auto lg:mx-0"
           >
-            <Image src={omar} alt="omar" className="w-full rounded-3xl" />
+            <div className="relative aspect-square rounded-3xl overflow-hidden border-4  border-white/[0.1] shadow-lg">
+              <Image
+                src={omar}
+                alt="Omar"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            </div>
           </motion.div>
 
+          {/* Text Content */}
           <div className="flex-1">
+            {/* Bio */}
             <TextAnimate
               duration={2.3}
               animation="slideUp"
               by="word"
-              className="mb-10 max-w-2xl"
+              className="mb-10 text-lg text-gray-300 leading-relaxed"
             >
               I&apos;m a passionate frontend developer with a focus on creating
               responsive, user-friendly websites and web applications. I enjoy
@@ -100,120 +111,98 @@ function AboutMe() {
               visual appeal and performance.
             </TextAnimate>
 
+            {/* Stats Cards */}
             <motion.ul
               variants={staggerContainer}
               initial="start"
               whileInView="end"
               viewport={{ once: true }}
-              className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl"
+              className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12"
             >
-              <motion.li
-                variants={fadeInUp}
-                className="border-[0.5px] border-gray-400 rounded-xl p-6 cursor-pointer hover:bg-[rgb(50,54,83)] hover:scale-105 duration-500 hover:shadow-[4px_4px_0_#fff]"
-              >
-                <GraduationCap className="mt-3" size={35} />
-                <h3 className="my-4 text-gray-300">Education</h3>
-                <p className="text-gray-300 text-sm">
-                  Meta Front-End Developer
-                </p>
-              </motion.li>
-
-              <motion.li
-                variants={fadeInUp}
-                className="border-[0.5px] border-gray-400 rounded-xl p-6 cursor-pointer hover:bg-[rgb(50,54,83)] hover:scale-105 duration-500 hover:shadow-[4px_4px_0_#fff]"
-              >
-                <User className="mt-3" size={35} />
-                <h3 className="my-4 text-gray-300">Clients</h3>
-                <p className="text-gray-300 text-sm">Over 12 clients</p>
-              </motion.li>
-
-              <motion.li
-                variants={fadeInUp}
-                className="border-[0.5px] border-gray-400 rounded-xl p-6 cursor-pointer hover:bg-[rgb(50,54,83)] hover:scale-105 duration-500 hover:shadow-[4px_4px_0_#fff]"
-              >
-                <BriefcaseBusiness className="mt-3" size={35} />
-                <h3 className="my-4 text-gray-300">Projects</h3>
-                <p className="text-gray-300 text-sm">
-                  Build more than 30 projects
-                </p>
-              </motion.li>
+              {[
+                {
+                  icon: <GraduationCap size={30} className="text-purple-400" />,
+                  title: "Education",
+                  text: "Meta Front-End Developer",
+                },
+                {
+                  icon: <User size={30} className="text-purple-400" />,
+                  title: "Clients",
+                  text: "12+ happy clients",
+                },
+                {
+                  icon: (
+                    <BriefcaseBusiness size={30} className="text-purple-400" />
+                  ),
+                  title: "Projects",
+                  text: "30+ completed",
+                },
+              ].map((item, index) => (
+                <motion.li
+                  key={index}
+                  variants={fadeInUp}
+                  className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-5 hover:bg-gray-700/50 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+                >
+                  <div className="flex flex-col items-center text-center">
+                    <div className="mb-3">{item.icon}</div>
+                    <h3 className="text-white font-medium mb-1">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-gray-300">{item.text}</p>
+                  </div>
+                </motion.li>
+              ))}
             </motion.ul>
 
-            <motion.h4
-              variants={fadeInUp}
-              initial="start"
-              whileInView="end"
-              viewport={{ once: true }}
-              className="my-6 text-white"
-            >
-              My Skills
-            </motion.h4>
-
-            <motion.ul
-              variants={staggerContainer}
-              initial="start"
-              whileInView="end"
-              viewport={{ once: true }}
-              className="flex items-center gap-3 sm:gap-5"
-            >
-              <motion.li
+            {/* Skills Section */}
+            <div className="space-y-4">
+              <motion.h4
                 variants={fadeInUp}
-                className="flex items-center justify-center w-12 sm:w-14 aspect-square border border-gray-400 rounded-lg cursor-pointer hover:scale-125 duration-500"
+                initial="start"
+                whileInView="end"
+                viewport={{ once: true }}
+                className="text-xl font-semibold text-white"
               >
-                <Image src={js} alt="JavaScript" width={20} height={20} />
-              </motion.li>
+                My Tech Stack
+              </motion.h4>
 
-              <motion.li
-                variants={fadeInUp}
-                className="flex items-center justify-center w-12 sm:w-14 aspect-square border border-gray-400 rounded-lg cursor-pointer hover:scale-125 duration-500"
+              <motion.ul
+                variants={staggerContainer}
+                initial="start"
+                whileInView="end"
+                viewport={{ once: true }}
+                className="flex flex-wrap gap-3"
               >
-                <Image src={ts} alt="TypeScript" width={20} height={20} />
-              </motion.li>
-
-              <motion.li
-                variants={fadeInUp}
-                className="flex items-center justify-center w-12 sm:w-14 aspect-square border border-gray-400 rounded-lg cursor-pointer hover:scale-125 duration-500"
-              >
-                <Image
-                  src={tailwind}
-                  alt="Tailwind CSS"
-                  width={20}
-                  height={20}
-                />
-              </motion.li>
-
-              <motion.li
-                variants={fadeInUp}
-                className="flex items-center justify-center w-12 sm:w-14 aspect-square border border-gray-400 rounded-lg cursor-pointer hover:scale-125 duration-500"
-              >
-                <Image src={react} alt="React" width={20} height={20} />
-              </motion.li>
-
-              <motion.li
-                variants={fadeInUp}
-                className="flex items-center justify-center w-12 sm:w-14 aspect-square border border-gray-400 rounded-lg cursor-pointer hover:scale-125 duration-500"
-              >
-                <Image src={redux} alt="Redux" width={20} height={20} />
-              </motion.li>
-
-              <motion.li
-                variants={fadeInUp}
-                className="flex items-center justify-center w-12 sm:w-14 aspect-square border border-gray-400 rounded-lg cursor-pointer hover:scale-125 duration-500"
-              >
-                <Image src={next} alt="Next.js" width={20} height={20} />
-              </motion.li>
-
-              <motion.li
-                variants={fadeInUp}
-                className="flex items-center justify-center w-12 sm:w-14 aspect-square border border-gray-400 rounded-lg cursor-pointer hover:scale-125 duration-500"
-              >
-                <Image src={git} alt="Git" width={20} height={20} />
-              </motion.li>
-            </motion.ul>
+                {[
+                  { src: js, alt: "JavaScript" },
+                  { src: ts, alt: "TypeScript" },
+                  { src: tailwind, alt: "Tailwind CSS" },
+                  { src: react, alt: "React" },
+                  { src: redux, alt: "Redux" },
+                  { src: next, alt: "Next.js" },
+                  { src: git, alt: "Git" },
+                ].map((skill, index) => (
+                  <motion.li
+                    key={index}
+                    variants={fadeInUp}
+                    className="flex items-center justify-center w-14 h-14 bg-gray-800 rounded-lg border border-gray-700 hover:bg-blue-900/20 hover:border-blue-400 transition-all duration-300 hover:scale-110"
+                    whileHover={{ y: -5 }}
+                  >
+                    <Image
+                      src={skill.src}
+                      alt={skill.alt}
+                      width={28}
+                      height={28}
+                      className="object-contain"
+                    />
+                  </motion.li>
+                ))}
+              </motion.ul>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

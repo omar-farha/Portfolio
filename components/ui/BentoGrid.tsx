@@ -1,6 +1,5 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { BackgroundGradientAnimation } from "./GradienBg";
 import { GlobeDemo } from "./GridGlobe";
 import Lottie from "react-lottie";
 import { useState } from "react";
@@ -87,7 +86,8 @@ export const BentoGridItem = ({
             <Image
               src={img}
               alt={img}
-              fill
+              width={100}
+              height={100}
               className={cn(imgClassName, "object-cover object-center")}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
@@ -110,9 +110,9 @@ export const BentoGridItem = ({
           )}
         </div>
         {id === 6 && (
-          <BackgroundGradientAnimation>
+          <div className=" bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 w-full h-full absolute overflow-hidden top-0 left-0">
             <div className="absolute z-50 inset-0 flex items-center justify-center text-white font-bold px-4 pointer-events-none text-3xl text-center md:text-4xl lg:text-7xl"></div>
-          </BackgroundGradientAnimation>
+          </div>
         )}
 
         <div
