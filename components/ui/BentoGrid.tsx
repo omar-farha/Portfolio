@@ -1,8 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import Lottie from "react-lottie";
 import { useState } from "react";
-import animationData from "@/data/confetti.json";
 import MagicButton from "./MagicButton";
 import { Copy } from "lucide-react";
 import { motion } from "framer-motion";
@@ -51,15 +49,6 @@ export const BentoGridItem = ({
   const rightLists = ["NodeJs", "NextJS", "GraphQL"];
 
   const [copied, setCopied] = useState(false);
-
-  const defaultOptions = {
-    loop: copied,
-    autoplay: copied,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
 
   const handleCopy = () => {
     const text = "farha.omar2008@gmail.com";
@@ -171,14 +160,6 @@ export const BentoGridItem = ({
           )}
           {id === 6 && (
             <div className="mt-5 relative">
-              <div
-                className={`absolute -bottom-5 right-0 ${
-                  copied ? "block" : "block"
-                }`}
-              >
-                <Lottie options={defaultOptions} height={200} width={400} />
-              </div>
-
               <MagicButton
                 title={copied ? "Email is Copied!" : "Copy my email address"}
                 icon={<Copy />}
