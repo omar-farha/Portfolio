@@ -8,16 +8,6 @@ import { Copy } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeIn, fadeInUp } from "@/lib/motionVariants";
 import Image from "next/image"; // Added Image import
-import dynamic from "next/dynamic";
-
-const GlobeDemo = dynamic(() => import("@/components/ui/GridGlobe"), {
-  ssr: false,
-  loading: () => (
-    <div className="h-[500px] w-full bg-gray-900 flex items-center justify-center">
-      <div className="animate-pulse">Loading globe...</div>
-    </div>
-  ),
-});
 
 export const BentoGrid = ({
   className,
@@ -149,7 +139,7 @@ export const BentoGridItem = ({
             {title}
           </motion.div>
 
-          {id === 2 && <GlobeDemo />}
+          {id === 2 && ""}
 
           {id === 3 && (
             <div className="flex gap-1 lg:gap-5 w-fit absolute -right-3 lg:-right-2">
