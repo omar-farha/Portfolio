@@ -4,6 +4,7 @@ import { PinContainer } from "./ui/3d-pin";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
+import Link from "next/link";
 
 const fadeInUp = {
   start: {
@@ -21,7 +22,7 @@ const fadeInUp = {
 
 const Projects = () => {
   return (
-    <div className="pt-20 pb-10 mt-20 text-white" id="projects">
+    <div className="pt-70 pb-10 sm:mt-0 lg:mt-20  text-white" id="projects">
       <motion.h1
         variants={fadeInUp}
         initial="start"
@@ -39,7 +40,7 @@ const Projects = () => {
             key={project.id}
             className="sm:h-[41rem] h-[32rem] lg:min-h-[32.5rem] sm:w-[570px] flex items-center justify-center w-[80vw]"
           >
-            <PinContainer title={project.link} href={project.link}>
+            <PinContainer title="Vist" href={project.link}>
               <div className="relative flex items-center justify-center sm:w-[570px] w-[80vw] overflow-hidden sm:h-[40vh] h-[30vh] mb-10">
                 <div className="relative w-full h-full overflow-hidden lg:rounded-3xl bg-[#13162d ]">
                   <Image src="/bg.png" alt="bg" width={400} height={400} />
@@ -47,8 +48,8 @@ const Projects = () => {
                 <Image
                   src={project.img}
                   alt={project.title}
-                  width={460}
-                  height={460}
+                  width={700}
+                  height={700}
                   className="z-10 absolute bottom-0"
                 />
               </div>
@@ -85,12 +86,14 @@ const Projects = () => {
                     </div>
                   ))}
                 </div>
-                <div className="flex justify-center items-center">
-                  <p className="flex lg:text-xl md:text-xs text-sm text-purple">
-                    Check Live Site
-                  </p>
-                  <ArrowUpRight className="ms-3" color="#CBACF9" />
-                </div>
+                <Link href={project.link} target="_blank">
+                  <div className="flex justify-center items-center">
+                    <p className="flex lg:text-xl md:text-xs text-sm text-purple">
+                      Check Live Site
+                    </p>
+                    <ArrowUpRight className="ms-3" color="#CBACF9" />
+                  </div>
+                </Link>
               </div>
             </PinContainer>
           </div>

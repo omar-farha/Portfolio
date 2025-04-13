@@ -112,7 +112,7 @@ const Hero = () => {
             initial="start"
             whileInView="end"
             viewport={{ once: true }}
-            href="#about"
+            href="#projects"
           >
             <MagicButton
               title="Show my work"
