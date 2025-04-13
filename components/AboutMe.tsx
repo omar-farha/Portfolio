@@ -10,7 +10,7 @@ import react from "@/public/React.png";
 import redux from "@/public/Redux.png";
 import next from "@/public/icons8-nextjs-48.png";
 import git from "@/public/Git.png";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { TextAnimate } from "./magicui/text-animate";
 
 const fadeInUp = {

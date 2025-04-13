@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import MagicButton from "./MagicButton";
 import { Copy } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { fadeIn, fadeInUp } from "@/lib/motionVariants";
 import Image from "next/image"; // Added Image import
 
