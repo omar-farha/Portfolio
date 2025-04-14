@@ -19,7 +19,7 @@ const fadeInUp = {
 
 const Clients = () => {
   return (
-    <div className="py-20 text-white" id="projects">
+    <div className="py-10 text-white" id="projects">
       <motion.h1
         variants={fadeInUp}
         initial="start"

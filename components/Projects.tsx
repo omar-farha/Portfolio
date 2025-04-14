@@ -22,7 +22,7 @@ const fadeInUp = {
 
 const Projects = () => {
   return (
-    <div className="pt-70 pb-10 sm:mt-0 lg:mt-20  text-white" id="projects">
+    <div className="pt-70 sm:mt-0 lg:mt-20  text-white" id="projects">
       <motion.h1
         variants={fadeInUp}
         initial="start"

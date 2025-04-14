@@ -197,13 +197,16 @@ export const socialMedia = [
   {
     id: 1,
     img: "/git.svg",
+    link: "https://github.com/omar-farha",
   },
   {
     id: 2,
-    img: "/twit.svg",
+    img: "/vecteezy_linkedin-png-icon_16716470.png",
+    link: "https://www.linkedin.com/in/omar-farha-036604285/",
   },
   {
     id: 3,
-    img: "/link.svg",
+    img: "/whatsap5.png",
+    link: "https://wa.me/201141412551",
   },
 ];

@@ -7,6 +7,8 @@ import GetStore from "@/components/GetStore";
 import Projects from "@/components/Projects";
 import { navItems } from "@/data";
 import Clients from "@/components/Clients";
+import Approach from "@/components/Approach";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -19,6 +21,8 @@ export default function Home() {
         <Projects />
         <GetStore />
         <Clients />
+        <Approach />
+        <Footer />
       </div>
     </div>
   );
