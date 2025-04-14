@@ -118,7 +118,7 @@ const Footer = () => {
               placeholder="Message"
               name="message"
             ></motion.textarea>
-            <a className=" text-center" onClick={sendEmail}>
+            <a className=" text-center">
               <MagicButton
                 title="Send"
                 icon={<Send size={17} />}
