@@ -24,3 +24,25 @@
     }
   }
 }
+
+/* Light Theme Styles - Darker Soft Slate Professional */
+.light {
+  background-color: #E2E8F0; /* slate-200 - more visible, darker slate tone */
+  color: #1e293b;
+}
+
+.dark {
+  background-color: #000319; /* deep blue-black */
+  color: #ffffff;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.overflow-x-auto::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.overflow-x-auto {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
