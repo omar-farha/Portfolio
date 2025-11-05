@@ -33,7 +33,7 @@ export const FloatingActionButton = () => {
     {
       icon: <Download className="w-5 h-5" />,
       label: "Resume",
-      href: "/resume.pdf",
+      href: "/Final-CV-Omar.pdf",
       download: true,
       color: "from-purple-500 to-pink-500",
     },

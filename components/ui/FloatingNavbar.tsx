@@ -321,7 +321,7 @@ export const FloatingNav = ({
               >
                 <div className="space-y-3">
                   <a
-                    href="/resume.pdf"
+                    href="/Final-CV-Omar.pdf"
                     download
                     className={cn(
                       "flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl font-medium transition-all duration-200",
