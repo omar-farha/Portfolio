@@ -26,7 +26,7 @@ export const FloatingNav = ({
 }) => {
   const { scrollYProgress } = useScroll();
   const { theme, toggleTheme } = useTheme();
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
 
@@ -35,7 +35,7 @@ export const FloatingNav = ({
       const direction = current - (scrollYProgress.getPrevious() ?? 0);
 
       if (scrollYProgress.get() < 0.05) {
-        setVisible(false);
+        setVisible(true);
       } else {
         if (direction < 0) {
           setVisible(true);
@@ -56,7 +56,9 @@ export const FloatingNav = ({
           }
         });
       },
-      { threshold: 0.5 }
+      // A band through the middle of the viewport, so sections taller than
+      // the screen still register as active
+      { rootMargin: "-50% 0px -50% 0px", threshold: 0 }
     );
 
     navItems.forEach((item) => {
@@ -174,7 +176,7 @@ export const FloatingNav = ({
       >
         <div className="flex items-center justify-between">
           <Link
-            href="#home"
+            href="#about"
             className={cn(
               "text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
             )}
@@ -211,6 +213,7 @@ export const FloatingNav = ({
                   : "bg-gray-200/50 text-gray-900"
               )}
               aria-label="Toggle menu"
+              aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? (
                 <X className="w-6 h-6" />
@@ -271,6 +274,7 @@ export const FloatingNav = ({
                   </h2>
                   <button
                     onClick={() => setMobileMenuOpen(false)}
+                    aria-label="Close menu"
                     className={cn(
                       "p-2 rounded-lg transition-colors",
                       theme === "dark"
@@ -367,12 +371,11 @@ export const FloatingNav = ({
                 </p>
                 <div className="flex gap-3">
                   {[
-                    { name: "GitHub", url: "https://github.com/omarfarha123" },
+                    { name: "GitHub", url: "https://github.com/omar-farha" },
                     {
                       name: "LinkedIn",
-                      url: "https://www.linkedin.com/in/omar-farha/",
+                      url: "https://www.linkedin.com/in/omar-farha-036604285/",
                     },
-                    { name: "Twitter", url: "#" },
                   ].map((social, idx) => (
                     <a
                       key={idx}

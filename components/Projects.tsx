@@ -7,12 +7,16 @@ import {
   ExternalLink,
   Github,
   Code2,
-  Calendar,
   Star,
-  Filter,
+  Trophy,
+  Briefcase,
+  Lock,
+  ChevronDown,
 } from "lucide-react";
 import Link from "next/link";
 import { useTheme } from "@/contexts/ThemeContext";
+
+const INITIAL_COUNT = 6;
 
 const fadeInUp = {
   start: { y: 30, opacity: 0 },
@@ -26,27 +30,41 @@ const fadeInUp = {
 const staggerContainer = {
   start: {},
   end: {
-    transition: { staggerChildren: 0.12 },
+    transition: { staggerChildren: 0.06 },
   },
 };
 
-const scaleIn = {
-  start: { scale: 0.9, opacity: 0 },
-  end: {
-    scale: 1,
-    opacity: 1,
-    transition: { duration: 0.5 },
-  },
+const cardIn = {
+  start: { y: 24, opacity: 0 },
+  end: { y: 0, opacity: 1, transition: { duration: 0.45 } },
 };
+
+// Client work first, then award-winning, then featured, otherwise keep data order
+const rank = (p: (typeof projects)[number]) => (p.client ? 0 : p.award ? 1 : p.featured ? 2 : 3);
+const orderedProjects = [...projects].sort((a, b) => rank(a) - rank(b));
+
+// A project shows under its main category and under any extra tags (e.g. "Systems")
+const inCategory = (p: (typeof projects)[number], category: string) =>
+  category === "All" || p.category === category || (p.tags ?? []).includes(category);
 
 const Projects = () => {
   const { theme } = useTheme();
+  const isDark = theme === "dark";
   const [activeCategory, setActiveCategory] = useState("All");
+  const [showAll, setShowAll] = useState(false);
 
-  const filteredProjects =
-    activeCategory === "All"
-      ? projects
-      : projects.filter((project) => project.category === activeCategory);
+  const filteredProjects = orderedProjects.filter((project) => inCategory(project, activeCategory));
+
+  // Only "All" is long enough to need collapsing
+  const collapsible = activeCategory === "All" && filteredProjects.length > INITIAL_COUNT;
+  const visibleProjects = collapsible && !showAll ? filteredProjects.slice(0, INITIAL_COUNT) : filteredProjects;
+
+  const selectCategory = (category: string) => {
+    setActiveCategory(category);
+    setShowAll(false);
+  };
+
+  const muted = isDark ? "text-gray-400" : "text-gray-600";
 
   return (
     <section className="py-20 relative overflow-hidden" id="projects">
@@ -66,24 +84,22 @@ const Projects = () => {
           className="text-center mb-12"
         >
           <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border mb-4 ${
-            theme === "dark"
-              ? "bg-blue-500/10 border-blue-500/20"
-              : "bg-blue-500/5 border-blue-500/30"
+            isDark ? "bg-blue-500/10 border-blue-500/20" : "bg-blue-500/5 border-blue-500/30"
           }`}>
             <Code2 className="w-5 h-5 text-blue-400" />
-            <span className={`text-sm font-medium ${theme === "dark" ? "text-blue-400" : "text-blue-600"}`}>
+            <span className={`text-sm font-medium ${isDark ? "text-blue-400" : "text-blue-600"}`}>
               Featured Work
             </span>
           </div>
-          <h2 className={`text-4xl md:text-5xl font-bold mt-4 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+          <h2 className={`text-4xl md:text-5xl font-bold mt-4 ${isDark ? "text-white" : "text-gray-900"}`}>
             Recent{" "}
             <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
               Projects
             </span>
           </h2>
-          <p className={`mt-4 max-w-2xl mx-auto ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-            A showcase of my recent work - from full-stack applications to
-            beautiful landing pages
+          <p className={`mt-4 max-w-2xl mx-auto ${muted}`}>
+            {projects.length} shipped projects — from award-winning full-stack
+            platforms to e-commerce stores and booking systems for real clients
           </p>
         </motion.div>
 
@@ -93,249 +109,198 @@ const Projects = () => {
           initial="start"
           whileInView="end"
           viewport={{ once: true }}
-          className="flex items-center justify-center mb-12"
+          className="flex justify-center mb-10"
         >
-          <div className={`inline-flex items-center gap-2 p-2 backdrop-blur-sm border rounded-full ${
-            theme === "dark"
-              ? "bg-gray-900/50 border-gray-700/50"
-              : "bg-white/50 border-gray-300/50 shadow-lg"
-          }`}>
-            <Filter className={`w-4 h-4 ml-2 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
-            <div className="flex flex-wrap gap-2">
-              {projectCategories.map((category) => (
-                <motion.button
+          <div
+            role="tablist"
+            aria-label="Filter projects by category"
+            className={`flex flex-wrap justify-center gap-1 p-1.5 backdrop-blur-sm border rounded-3xl sm:rounded-full ${
+              isDark ? "bg-gray-900/50 border-gray-700/50" : "bg-white/60 border-gray-300/50 shadow-lg"
+            }`}
+          >
+            {projectCategories.map((category) => {
+              const count = projects.filter((p) => inCategory(p, category)).length;
+              const active = activeCategory === category;
+              return (
+                <button
                   key={category}
-                  onClick={() => setActiveCategory(category)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                    activeCategory === category
-                      ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/50"
-                      : theme === "dark"
-                      ? "text-gray-400 hover:text-white hover:bg-gray-800/50"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => selectCategory(category)}
+                  className={`relative flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
+                    active
+                      ? "text-white"
+                      : isDark
+                      ? "text-gray-400 hover:text-white"
+                      : "text-gray-600 hover:text-gray-900"
                   }`}
                 >
-                  {category}
-                  {category !== "All" && (
-                    <span className="ml-1 text-xs opacity-70">
-                      ({projects.filter((p) => p.category === category).length})
-                    </span>
+                  {active && (
+                    <motion.span
+                      layoutId="activeProjectFilter"
+                      className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 shadow-lg shadow-blue-500/30"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
                   )}
-                </motion.button>
-              ))}
-            </div>
+                  <span className="relative">
+                    {category}
+                    <span className="ml-1.5 text-xs opacity-70">{count}</span>
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </motion.div>
 
-        {/* Results Count */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center mb-8"
-        >
-          <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-            Showing{" "}
-            <span className={`font-semibold ${theme === "dark" ? "text-blue-400" : "text-blue-600"}`}>
-              {filteredProjects.length}
-            </span>{" "}
-            {filteredProjects.length === 1 ? "project" : "projects"}
-          </p>
-        </motion.div>
-
         {/* Projects Grid */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeCategory}
-            variants={staggerContainer}
-            initial="start"
-            animate="end"
-            exit={{ opacity: 0, scale: 0.9 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-8"
-          >
-            {filteredProjects.map((project) => (
-              <motion.div
-                key={project.id}
-                variants={scaleIn}
-                layout
-                className="group relative"
-              >
-                <motion.div
-                  whileHover={{ y: -12, transition: { duration: 0.4 } }}
-                  className={`relative backdrop-blur-sm border rounded-3xl overflow-hidden hover:border-blue-500/50 transition-all duration-500 h-full ${
-                    theme === "dark"
-                      ? "bg-gradient-to-br from-gray-900/90 to-gray-800/60 border-gray-700/50"
-                      : "bg-gradient-to-br from-slate-50/95 to-slate-200/90 border-slate-400/50 shadow-lg"
+        <motion.div
+          key={activeCategory}
+          variants={staggerContainer}
+          initial="start"
+          animate="end"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          <AnimatePresence initial={false}>
+            {visibleProjects.map((project) => {
+              const [name, kind] = project.title.split(" — ");
+              return (
+                <motion.article
+                  key={project.id}
+                  variants={cardIn}
+                  initial="start"
+                  animate="end"
+                  exit={{ opacity: 0, y: 12, transition: { duration: 0.2 } }}
+                  whileHover={{ y: -6 }}
+                  className={`group relative flex flex-col overflow-hidden rounded-3xl border transition-colors duration-300 ${
+                    isDark
+                      ? "bg-gray-900/70 border-gray-800 hover:border-blue-500/40"
+                      : "bg-white/80 border-slate-300 shadow-lg hover:border-blue-500/50"
                   }`}
                 >
-                  {/* Gradient overlay on hover */}
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
-                  />
-
-                  {/* Featured Badge */}
-                  {project.featured && (
-                    <div className="absolute top-6 left-6 z-20">
-                      <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-yellow-500/20 to-orange-500/20 backdrop-blur-md border border-yellow-500/30">
-                        <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                        <span className="text-xs font-semibold text-yellow-300">
-                          Featured
-                        </span>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Status & Year Badge */}
-                  <div className="absolute top-6 right-6 z-20 flex flex-col gap-2">
-                    <div className="px-3 py-1.5 rounded-full bg-green-500/20 backdrop-blur-md border border-green-500/30">
-                      <span className="text-xs font-semibold text-green-300">
-                        {project.status}
-                      </span>
-                    </div>
-                    <div className={`px-3 py-1.5 rounded-full backdrop-blur-md border flex items-center gap-1.5 ${
-                      theme === "dark"
-                        ? "bg-black/70 border-gray-700/50"
-                        : "bg-white/70 border-gray-300/50"
-                    }`}>
-                      <Calendar className={`w-3 h-3 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
-                      <span className={`text-xs font-medium ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
-                        {project.year}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Project Image */}
-                  <div className="relative h-[300px] md:h-[350px] overflow-hidden">
-                    <div
-                      className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-20`}
-                    />
+                  {/* Screenshot */}
+                  <div className="relative h-52 overflow-hidden">
                     <Image
                       src={project.img}
-                      alt={project.title}
+                      alt={`${name} screenshot`}
                       fill
-                      className="object-cover object-top group-hover:scale-110 transition-transform duration-700"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+                      className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                     />
-                    {/* Overlay gradient */}
-                    <div className={`absolute inset-0 bg-gradient-to-t ${
-                      theme === "dark"
-                        ? "from-gray-900 via-gray-900/50 to-transparent"
-                        : "from-slate-200 via-slate-200/50 to-transparent"
-                    }`} />
+                    <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-0 group-hover:opacity-15 transition-opacity duration-500`} />
+
+                    <div className="absolute top-3 left-3 flex flex-wrap gap-2">
+                      {project.award ? (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-400/95 text-gray-900 text-[11px] font-semibold shadow-lg">
+                          <Trophy className="w-3 h-3" />
+                          {project.award}
+                        </span>
+                      ) : project.featured ? (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md text-yellow-300 text-[11px] font-semibold">
+                          <Star className="w-3 h-3 fill-yellow-300" />
+                          Featured
+                        </span>
+                      ) : project.client ? (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md text-white text-[11px] font-semibold">
+                          <Briefcase className="w-3 h-3" />
+                          Client Project
+                        </span>
+                      ) : null}
+                    </div>
+                    <span className="absolute top-3 right-3 px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-md text-white text-[11px] font-medium">
+                      {project.year}
+                    </span>
                   </div>
 
                   {/* Content */}
-                  <div className="relative p-8 -mt-20 z-10">
-                    {/* Category Badge */}
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-500/20 backdrop-blur-md border border-blue-500/30 mb-4">
-                      <Code2 className="w-3 h-3 text-blue-400" />
-                      <span className={`text-xs font-medium ${theme === "dark" ? "text-blue-300" : "text-blue-600"}`}>
-                        {project.category}
-                      </span>
-                    </div>
-
-                    {/* Title */}
-                    <h3 className={`text-2xl md:text-3xl font-bold mb-3 group-hover:text-blue-400 transition-colors ${
-                      theme === "dark" ? "text-white" : "text-gray-900"
-                    }`}>
-                      {project.title}
-                    </h3>
-
-                    {/* Description */}
-                    <p className={`text-sm md:text-base leading-relaxed mb-6 ${
-                      theme === "dark" ? "text-gray-400" : "text-gray-600"
-                    }`}>
-                      {project.des}
+                  <div className="flex flex-col flex-1 p-6">
+                    <p className={`text-xs font-semibold uppercase tracking-wider ${isDark ? "text-blue-400" : "text-blue-600"}`}>
+                      {kind ?? project.category}
                     </p>
-
-                    {/* Tech Stack */}
-                    <div className={`flex flex-wrap items-center gap-3 mb-6 pb-6 border-b ${
-                      theme === "dark" ? "border-gray-800/50" : "border-slate-300/50"
+                    <h3 className={`text-xl font-bold mt-1.5 group-hover:text-blue-400 transition-colors ${
+                      isDark ? "text-white" : "text-gray-900"
                     }`}>
-                      {project.iconLists.map((icon, idx) => (
-                        <div
-                          key={idx}
-                          className={`relative w-10 h-10 rounded-lg border p-2 group-hover:border-blue-500/30 transition-colors ${
-                            theme === "dark"
-                              ? "bg-gray-800/50 border-gray-700/50"
-                              : "bg-slate-100/50 border-slate-300/50"
-                          }`}
-                          title={`Technology ${idx + 1}`}
-                        >
-                          <Image
-                            src={icon}
-                            alt={`tech-${idx}`}
-                            fill
-                            className="object-contain p-1"
-                          />
-                        </div>
-                      ))}
-                    </div>
+                      {name}
+                    </h3>
+                    <p className={`text-sm leading-relaxed mt-2 line-clamp-3 ${muted}`}>{project.des}</p>
 
-                    {/* Action Buttons */}
-                    <div className="flex items-center gap-4">
-                      <Link
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 group/btn"
-                      >
-                        <div className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-medium hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300">
-                          <span>Live Demo</span>
-                          <ExternalLink className="w-4 h-4 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
-                        </div>
-                      </Link>
-                      <Link
-                        href={project.githubLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group/btn"
-                      >
-                        <div className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl border hover:border-blue-500/50 transition-all duration-300 ${
-                          theme === "dark"
-                            ? "bg-gray-800/50 border-gray-700/50 text-gray-300 hover:bg-gray-700/50 hover:text-white"
-                            : "bg-slate-100/50 border-slate-300/50 text-slate-700 hover:bg-slate-200/50 hover:text-slate-900"
+                    {project.iconLists.length > 0 && (
+                      <div className="flex items-center gap-2 mt-4">
+                        {project.iconLists.map((icon) => (
+                          <div
+                            key={icon}
+                            className={`relative w-8 h-8 rounded-lg border p-1.5 ${
+                              isDark ? "bg-gray-800/60 border-gray-700/50" : "bg-slate-800 border-slate-700"
+                            }`}
+                          >
+                            <Image src={icon} alt="" width={20} height={20} className="w-full h-full object-contain" />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Actions */}
+                    <div className={`flex items-center gap-3 mt-auto pt-5`}>
+                      {project.link ? (
+                        <Link
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group/btn flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-sm font-medium hover:shadow-lg hover:shadow-blue-500/40 transition-shadow"
+                        >
+                          Live Site
+                          <ExternalLink className="w-4 h-4 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                        </Link>
+                      ) : (
+                        <span className={`flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border text-sm ${
+                          isDark ? "border-gray-800 text-gray-500" : "border-slate-200 text-slate-500"
                         }`}>
-                          <Github className="w-5 h-5 group-hover/btn:rotate-12 transition-transform" />
-                          <span className="hidden sm:inline">Code</span>
-                        </div>
-                      </Link>
+                          <Lock className="w-4 h-4" />
+                          Private Project
+                        </span>
+                      )}
+                      {project.githubLink && (
+                        <Link
+                          href={project.githubLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`${name} source code on GitHub`}
+                          className={`inline-flex items-center justify-center p-2.5 rounded-xl border transition-colors ${
+                            isDark
+                              ? "bg-gray-800/50 border-gray-700/50 text-gray-300 hover:text-white hover:border-blue-500/50"
+                              : "bg-slate-50 border-slate-300 text-slate-700 hover:text-slate-900 hover:border-blue-500/50"
+                          }`}
+                        >
+                          <Github className="w-5 h-5" />
+                        </Link>
+                      )}
                     </div>
                   </div>
+                </motion.article>
+              );
+            })}
+          </AnimatePresence>
+        </motion.div>
 
-                  {/* Decorative corner */}
-                  <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-blue-500/5 to-transparent rounded-tl-full" />
-                </motion.div>
-
-                {/* Glow effect on hover */}
-                <div
-                  className={`absolute inset-0 -z-10 bg-gradient-to-br ${project.color} opacity-0 group-hover:opacity-25 blur-2xl transition-opacity duration-500 rounded-3xl`}
-                />
-              </motion.div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Empty State */}
-        {filteredProjects.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center py-16"
-          >
-            <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full border mb-4 ${
-              theme === "dark"
-                ? "bg-gray-800/50 border-gray-700/50"
-                : "bg-gray-100/50 border-gray-300/50"
-            }`}>
-              <Code2 className={`w-8 h-8 ${theme === "dark" ? "text-gray-500" : "text-gray-400"}`} />
-            </div>
-            <h3 className={`text-xl font-semibold mb-2 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-              No projects found
-            </h3>
-            <p className={`text-sm ${theme === "dark" ? "text-gray-500" : "text-gray-500"}`}>
-              Try selecting a different category
-            </p>
-          </motion.div>
+        {/* Show more / less */}
+        {collapsible && (
+          <div className="flex justify-center mt-10">
+            <button
+              type="button"
+              onClick={() => {
+                if (showAll) document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+                setShowAll((v) => !v);
+              }}
+              aria-expanded={showAll}
+              className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl border font-medium transition-colors ${
+                isDark
+                  ? "bg-gray-900/60 border-gray-700 text-white hover:border-blue-500/50"
+                  : "bg-white/70 border-slate-300 text-slate-900 hover:border-blue-500/50 shadow-lg"
+              }`}
+            >
+              {showAll ? "Show less" : `Show all ${filteredProjects.length} projects`}
+              <ChevronDown className={`w-4 h-4 transition-transform ${showAll ? "rotate-180" : ""}`} />
+            </button>
+          </div>
         )}
 
         {/* Bottom CTA */}
@@ -344,9 +309,9 @@ const Projects = () => {
           initial="start"
           whileInView="end"
           viewport={{ once: true }}
-          className="text-center mt-16"
+          className="text-center mt-14"
         >
-          <p className={`text-sm mb-6 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+          <p className={`text-sm mb-6 ${muted}`}>
             Want to see more? Check out my GitHub for additional projects and contributions
           </p>
           <Link
@@ -354,7 +319,7 @@ const Projects = () => {
             target="_blank"
             rel="noopener noreferrer"
             className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl border hover:border-blue-500/50 transition-all duration-300 group ${
-              theme === "dark"
+              isDark
                 ? "bg-gray-900/50 border-gray-700/50 text-white hover:bg-gray-800/50"
                 : "bg-white/50 border-slate-300/50 text-slate-900 hover:bg-slate-100/50 shadow-lg"
             }`}

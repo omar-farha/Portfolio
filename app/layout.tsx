@@ -14,6 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://portfolio-red-one-46.vercel.app"),
   title: "Omar Farha | Frontend Developer Portfolio",
   description:
     "Frontend Developer specializing in React, Next.js, and TypeScript. Creating responsive, user-friendly web applications with modern technologies. Based in Egypt.",
@@ -40,8 +41,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/omar.jpg",
-        width: 1200,
-        height: 630,
+        width: 800,
+        height: 1000,
         alt: "Omar Farha - Frontend Developer",
       },
     ],
@@ -64,9 +65,6 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  verification: {
-    google: "your-google-verification-code",
-  },
 };
 
 export default function RootLayout({
@@ -77,8 +75,6 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="theme-color" content="#000319" />
       </head>
       <body

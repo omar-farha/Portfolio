@@ -18,6 +18,7 @@ import next from "@/public/icons8-nextjs-48.png";
 import git from "@/public/Git.png";
 import { motion } from "motion/react";
 import { useTheme } from "@/contexts/ThemeContext";
+import { projects, certifications, competitions } from "@/data";
 
 const fadeInUp = {
   start: { y: 30, opacity: 0 },
@@ -88,18 +89,18 @@ function AboutMe() {
   const stats = [
     {
       icon: <Briefcase className="w-5 h-5" />,
-      title: "Years Experience",
-      count: 3,
-      suffix: "+",
+      title: "Gold Medals",
+      count: competitions.filter((c) => c.place === 1).length,
+      suffix: "",
       color: "from-purple-500 to-pink-500",
       iconBg: "bg-purple-500/10",
       iconColor: "text-purple-400",
     },
     {
       icon: <Award className="w-5 h-5" />,
-      title: "Projects Completed",
-      count: 30,
-      suffix: "+",
+      title: "Projects Built",
+      count: projects.length,
+      suffix: "",
       color: "from-blue-500 to-cyan-500",
       iconBg: "bg-blue-500/10",
       iconColor: "text-blue-400",
@@ -107,8 +108,8 @@ function AboutMe() {
     {
       icon: <GraduationCap className="w-5 h-5" />,
       title: "Certifications",
-      count: 11,
-      suffix: "+",
+      count: certifications.length,
+      suffix: "",
       color: "from-green-500 to-emerald-500",
       iconBg: "bg-green-500/10",
       iconColor: "text-green-400",
@@ -190,10 +191,10 @@ function AboutMe() {
             {/* Gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 opacity-[0.03]" />
 
-            <div className="relative z-10 flex flex-col lg:flex-row gap-8 p-8">
+            <div className="relative z-10 grid grid-cols-[88px_1fr] sm:flex sm:flex-col lg:flex-row items-center sm:items-stretch gap-x-4 gap-y-4 sm:gap-6 lg:gap-8 p-5 sm:p-8">
               {/* Profile Image */}
-              <div className="flex-shrink-0 mx-auto lg:mx-0">
-                <div className={`relative w-[280px] h-[280px] rounded-2xl overflow-hidden border-2 ${
+              <div className="flex-shrink-0 sm:mx-auto lg:mx-0 row-span-1">
+                <div className={`relative w-[88px] h-[110px] sm:w-[280px] sm:h-[350px] rounded-xl sm:rounded-2xl overflow-hidden border-2 ${
                   theme === "dark" ? "border-gray-700/60" : "border-slate-300/60"
                 }`}>
                   <Image
@@ -208,21 +209,26 @@ function AboutMe() {
               </div>
 
               {/* Bio & Info */}
-              <div className="flex-1 space-y-6">
-                <div>
-                  <h3 className={`text-2xl font-bold mb-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+              <div className="contents sm:block sm:flex-1 sm:space-y-6 sm:text-center lg:text-left">
+                <div className="min-w-0">
+                  <h3 className={`text-xl sm:text-2xl font-bold mb-1 sm:mb-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
                     Omar Farha
                   </h3>
-                  <p className={`text-lg font-semibold mb-4 ${theme === "dark" ? "text-purple-400" : "text-purple-600"}`}>
+                  <p className={`text-sm sm:text-lg font-semibold sm:mb-4 ${theme === "dark" ? "text-purple-400" : "text-purple-600"}`}>
                     Full-Stack Developer & Educator
                   </p>
-                  <p className={`leading-relaxed mb-4 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                  <p className={`hidden sm:block leading-relaxed mb-4 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
                     Passionate developer specializing in modern web technologies. I create responsive, user-centric applications while teaching the next generation of developers. Currently building full-stack solutions with Next.js and empowering 30+ students to start their coding journey.
                   </p>
                 </div>
 
+                {/* Short bio — mobile only */}
+                <p className={`sm:hidden col-span-2 text-sm leading-relaxed ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                  Building full-stack web apps with Next.js and teaching 30+ students to start coding.
+                </p>
+
                 {/* Highlights */}
-                <div className="grid sm:grid-cols-2 gap-3">
+                <div className="hidden sm:grid sm:grid-cols-2 gap-3 text-left max-w-md mx-auto lg:max-w-none lg:mx-0">
                   {highlights.map((highlight, index) => (
                     <div
                       key={index}
@@ -238,7 +244,7 @@ function AboutMe() {
                 <a
                   href="/Final-CV-Omar.pdf"
                   download
-                  className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl border-2 font-semibold transition-all duration-300 hover:scale-105 ${
+                  className={`col-span-2 justify-center sm:justify-start inline-flex items-center gap-2 whitespace-nowrap px-6 py-3 rounded-xl border-2 font-semibold transition-all duration-300 hover:scale-105 ${
                     theme === "dark"
                       ? "bg-gradient-to-r from-purple-500 to-pink-500 border-purple-500 text-white shadow-lg shadow-purple-500/50 hover:shadow-purple-500/70"
                       : "bg-gradient-to-r from-purple-500 to-pink-500 border-purple-500 text-white shadow-lg shadow-purple-500/50 hover:shadow-purple-500/70"
@@ -257,30 +263,30 @@ function AboutMe() {
             initial="start"
             whileInView="end"
             viewport={{ once: true }}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8"
+            className="grid grid-cols-3 gap-3 sm:gap-4 mb-8"
           >
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
                 variants={scaleIn}
                 whileHover={{ y: -5, scale: 1.02 }}
-                className={`relative border-2 rounded-2xl p-6 transition-all duration-300 ${
+                className={`relative border-2 rounded-2xl p-3 sm:p-6 transition-all duration-300 ${
                   theme === "dark"
                     ? "bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700/60 hover:border-purple-500/60 shadow-xl shadow-black/50"
                     : "bg-gradient-to-br from-white to-slate-50 border-slate-300/60 hover:border-purple-500/60 shadow-lg"
                 }`}
               >
-                <div className="flex items-center gap-4">
-                  <div className={`p-3 rounded-xl ${stat.iconBg} ${stat.iconColor}`}>
+                <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-left">
+                  <div className={`p-2.5 sm:p-3 rounded-xl ${stat.iconBg} ${stat.iconColor}`}>
                     {stat.icon}
                   </div>
                   <div>
-                    <p className={`text-sm font-medium mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    <p className={`text-xs sm:text-sm font-medium mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
                       {stat.title}
                     </p>
-                    <p className={`text-3xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
+                    <div className={`text-2xl sm:text-3xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
                       <AnimatedCounter end={stat.count} suffix={stat.suffix} />
-                    </p>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -293,7 +299,7 @@ function AboutMe() {
             initial="start"
             whileInView="end"
             viewport={{ once: true }}
-            className={`relative border-2 rounded-3xl p-8 ${
+            className={`relative border-2 rounded-3xl p-5 sm:p-8 ${
               theme === "dark"
                 ? "bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700/60 shadow-xl shadow-black/50"
                 : "bg-gradient-to-br from-white to-slate-50 border-slate-300/60 shadow-xl shadow-slate-300/50"
@@ -313,14 +319,14 @@ function AboutMe() {
               initial="start"
               whileInView="end"
               viewport={{ once: true }}
-              className="grid grid-cols-4 sm:grid-cols-7 gap-4"
+              className="flex flex-wrap justify-center gap-3 sm:grid sm:grid-cols-7 sm:gap-4"
             >
               {techStack.map((tech, index) => (
                 <motion.div
                   key={index}
                   variants={scaleIn}
                   whileHover={{ y: -8, scale: 1.1 }}
-                  className={`group relative aspect-square rounded-xl border-2 transition-all duration-300 cursor-pointer p-4 flex items-center justify-center ${
+                  className={`group relative w-14 sm:w-auto aspect-square rounded-xl border-2 transition-all duration-300 cursor-pointer p-3 sm:p-4 flex items-center justify-center ${
                     theme === "dark"
                       ? "bg-gray-800 border-gray-700/60 hover:border-purple-500/60"
                       : "bg-white border-slate-300/60 hover:border-purple-500/60 shadow"

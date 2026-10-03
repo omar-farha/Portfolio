@@ -1,17 +1,15 @@
 "use client";
-import AboutMe from "@/components/AboutMe";
 import Grid from "@/components/Gride";
+import AboutMe from "@/components/AboutMe";
 import Hero from "@/components/Hero";
 import { FloatingNav } from "@/components/ui/FloatingNavbar";
 import { FloatingActionButton } from "@/components/ui/FloatingActionButton";
-import GetStore from "@/components/GetStore";
 import Projects from "@/components/Projects";
 import { navItems } from "@/data";
-import Clients from "@/components/Clients";
-import Approach from "@/components/Approach";
 import Footer from "@/components/Footer";
 import Experience from "@/components/Experience";
 import Certifications from "@/components/Certifications";
+import Competitions from "@/components/Competitions";
 import { useTheme } from "@/contexts/ThemeContext";
 
 export default function Home() {
@@ -29,13 +27,11 @@ export default function Home() {
         <main>
           <Hero />
           <AboutMe />
-          <Experience />
+          <Competitions />
           <Certifications />
           <Projects />
+          <Experience />
           <Grid />
-          <GetStore />
-          <Clients />
-          <Approach />
         </main>
         <Footer />
       </div>

@@ -8,6 +8,7 @@ import MagicButton from "./ui/MagicButton";
 import { motion, useScroll, useTransform } from "motion/react";
 import { Send, Sparkles, ArrowDown } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
+import { projects, certifications } from "@/data";
 
 const fadeInUp = {
   start: {
@@ -18,8 +19,8 @@ const fadeInUp = {
     y: 0,
     opacity: 1,
     transition: {
-      duration: 0.7,
-      delay: 1.5,
+      duration: 0.6,
+      delay: 0.5,
     },
   },
 };
@@ -42,7 +43,7 @@ const fadeIn2 = {
     opacity: 1,
     transition: {
       duration: 0.5,
-      delay: 1.9,
+      delay: 0.7,
     },
   },
 };
@@ -56,8 +57,8 @@ const scaleIn = {
     scale: 1,
     opacity: 1,
     transition: {
-      duration: 0.7,
-      delay: 0.3,
+      duration: 0.5,
+      delay: 0.1,
     },
   },
 };
@@ -143,8 +144,8 @@ const Hero = () => {
           {/* Main Heading */}
           <h1 className={`text-center text-[40px] md:text-6xl lg:text-7xl font-bold my-6 leading-[1.1] tracking-tight ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
             <TextAnimate
-              duration={0.9}
-              delay={0.5}
+              duration={0.6}
+              delay={0.2}
               animation="slideUp"
               by="word"
             >
@@ -206,9 +207,9 @@ const Hero = () => {
             className={`flex flex-wrap items-center justify-center gap-8 mt-16 pt-8 border-t ${theme === "dark" ? "border-gray-800/50" : "border-gray-300/50"}`}
           >
             {[
-              { label: "Years Experience", value: "3+" },
-              { label: "Projects Completed", value: "30+" },
-              { label: "Happy Clients", value: "12+" },
+              { label: "Projects Built", value: String(projects.length) },
+              { label: "Certifications", value: String(certifications.length) },
+              { label: "Shipping Since", value: "2024" },
             ].map((stat, index) => (
               <div key={index} className="text-center">
                 <div className="text-3xl md:text-4xl font-bold text-transparent bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text mb-1">

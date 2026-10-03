@@ -178,8 +178,8 @@ export const BentoGridItem = ({
 
           {/* Tech Stack Lists (Card 3) */}
           {id === 3 && (
-            <div className="flex gap-1 lg:gap-5 w-fit absolute -right-3 lg:-right-2">
-              <div className="flex flex-col gap-3 md:gap-3 lg:gap-8">
+            <div className="mt-4 flex flex-wrap gap-2 md:mt-0 md:flex-nowrap md:gap-1 lg:gap-5 md:w-fit md:absolute md:-right-3 lg:-right-2">
+              <div className="contents md:flex md:flex-col md:gap-3 lg:gap-8">
                 {leftLists.map((item, i) => (
                   <motion.span
                     key={i}
@@ -187,7 +187,7 @@ export const BentoGridItem = ({
                     whileInView={{ x: 0, opacity: 1 }}
                     transition={{ delay: i * 0.1 }}
                     viewport={{ once: true }}
-                    className={`lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-base opacity-50 lg:opacity-100 rounded-lg text-center backdrop-blur-sm border hover:border-green-500/50 transition-colors ${
+                    className={`lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-base opacity-100 md:opacity-50 lg:opacity-100 rounded-lg text-center backdrop-blur-sm border hover:border-green-500/50 transition-colors ${
                       theme === "dark"
                         ? "bg-gradient-to-br from-gray-900/90 to-gray-800/80 border-gray-700/50"
                         : "bg-gradient-to-br from-white/95 to-slate-100/90 border-slate-300/50"
@@ -196,14 +196,14 @@ export const BentoGridItem = ({
                     {item}
                   </motion.span>
                 ))}
-                <span className={`lg:py-4 lg:px-3 py-4 px-3 rounded-lg text-center backdrop-blur-sm border ${
+                <span className={`hidden md:block lg:py-4 lg:px-3 py-4 px-3 rounded-lg text-center backdrop-blur-sm border ${
                   theme === "dark"
                     ? "bg-gradient-to-br from-gray-900/50 to-gray-800/30 border-gray-700/30"
                     : "bg-gradient-to-br from-white/50 to-slate-100/30 border-slate-300/30"
                 }`}></span>
               </div>
-              <div className="flex flex-col gap-3 md:gap-3 lg:gap-8">
-                <span className={`lg:py-4 lg:px-3 py-4 px-3 rounded-lg text-center backdrop-blur-sm border ${
+              <div className="contents md:flex md:flex-col md:gap-3 lg:gap-8">
+                <span className={`hidden md:block lg:py-4 lg:px-3 py-4 px-3 rounded-lg text-center backdrop-blur-sm border ${
                   theme === "dark"
                     ? "bg-gradient-to-br from-gray-900/50 to-gray-800/30 border-gray-700/30"
                     : "bg-gradient-to-br from-white/50 to-slate-100/30 border-slate-300/30"
@@ -215,7 +215,7 @@ export const BentoGridItem = ({
                     whileInView={{ x: 0, opacity: 1 }}
                     transition={{ delay: i * 0.1 + 0.1 }}
                     viewport={{ once: true }}
-                    className={`lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-base opacity-50 lg:opacity-100 rounded-lg text-center backdrop-blur-sm border hover:border-green-500/50 transition-colors ${
+                    className={`lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-base opacity-100 md:opacity-50 lg:opacity-100 rounded-lg text-center backdrop-blur-sm border hover:border-green-500/50 transition-colors ${
                       theme === "dark"
                         ? "bg-gradient-to-br from-gray-900/90 to-gray-800/80 border-gray-700/50"
                         : "bg-gradient-to-br from-white/95 to-slate-100/90 border-slate-300/50"
