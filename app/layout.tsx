@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://portfolio-red-one-46.vercel.app"),
+  metadataBase: new URL("https://omar-farha.vercel.app"),
   title: "Omar Farha | Frontend Developer Portfolio",
   description:
     "Frontend Developer specializing in React, Next.js, and TypeScript. Creating responsive, user-friendly web applications with modern technologies. Based in Egypt.",
@@ -28,12 +28,12 @@ export const metadata: Metadata = {
     "Web Developer Egypt",
     "Portfolio",
   ],
-  authors: [{ name: "Omar Farha", url: "https://portfolio-red-one-46.vercel.app/" }],
+  authors: [{ name: "Omar Farha", url: "https://omar-farha.vercel.app/" }],
   creator: "Omar Farha",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://portfolio-red-one-46.vercel.app/",
+    url: "https://omar-farha.vercel.app/",
     title: "Omar Farha | Frontend Developer Portfolio",
     description:
       "Frontend Developer specializing in React, Next.js, and TypeScript. Creating responsive, user-friendly web applications.",
